@@ -5,6 +5,7 @@ import { ProductWisePurchaseReport, deletePurchaseOrder, purchaseOrder, purchase
 const router = express.Router();
 const upload = multer({ dest: "public/Images/" })
 
+
 router.post("/save-purchase-order", purchaseOrder)
 router.get("/view-purchase-order-history/:id/:database", purchaseOrderHistory)
 router.get("/view-purchase-order-history-by-id/:id", purchaseOrderHistoryByOrderId);
