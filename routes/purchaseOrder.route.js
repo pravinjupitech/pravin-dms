@@ -12,5 +12,4 @@ router.put("/update-purchase-order/:id", updatePurchaseOrder);
 router.put("/update-purchase-order-status/:id", updatePurchaseOrderStatus);
 router.post("/product-purchase-report/:database", ProductWisePurchaseReport)
 router.delete("/delete-purchase-order/:id", deletePurchaseOrder);
-
 export default router;
