@@ -1,5 +1,5 @@
 import express from "express";
-import { DeleteCustomer, SaveCustomer, SignIn, UpdateCustomer, ViewCustomer, ViewCustomerById, dueParty, forgetPassword, lockParty, otpVerify, overDueReport, paymentDueReport, saveExcelFile, updatePassword } from "../controller/customer.controller.js";
+import { DeleteCustomer, SaveCustomer, SignIn, SignInWithMobile, SuperAdminList, UpdateCustomer, ViewCustomer, ViewCustomerById, dueParty, forgetPassword, lockParty, otpVerify, overDueReport, paymentDueReport, saveExcelFile, updatePassword } from "../controller/customer.controller.js";
 import multer from "multer";
 
 const router = express.Router();
@@ -14,8 +14,10 @@ router.get("/view-customer-by-id/:id", ViewCustomerById);
 router.get("/delete-customer/:id", DeleteCustomer);
 router.post("/update-customer/:id", upload.any("files"), UpdateCustomer);
 
+router.post("/login", SignInWithMobile)
 router.post("/signIn", SignIn)
 router.post("/forget-password", forgetPassword)
+router.post("/super-admin-list",SuperAdminList)
 router.post("/otp-verify", otpVerify)
 router.post("/update-password/:id", updatePassword)
 
