@@ -27,9 +27,9 @@ export const purchaseOrder = async (req, res, next) => {
                     // product.partyId = req.body.partyId;
                     // product.purchaseStatus = true
                     product.landedCost = await orderItem.landedCost;
-                    product.basicPrice = await orderItem.basicPrice;
+                    // product.basicPrice = await orderItem.basicPrice;
                     await product.save();
-                    console.log(await product.save())
+                    // console.log(await product.save())
                     // const warehouse = { productId: orderItem.productId, unitType: orderItem.unitType, currentStock: orderItem.qty, transferQty: orderItem.qty, price: orderItem.price, totalPrice: orderItem.totalPrice, Size: orderItem.Size }
                     // await addProductInWarehouse(warehouse, product.warehouse)
                 } else {

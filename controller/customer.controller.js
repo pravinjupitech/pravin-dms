@@ -9,6 +9,7 @@ import transporter from "../service/email.js";
 import { OverDueReport } from "../model/overDue.mode.js";
 import { User } from "../model/user.model.js";
 import { PaymentDueReport } from "../model/payment.due.report.js";
+import { Role } from "../model/role.model.js";
 dotenv.config();
 
 export const SaveCustomer = async (req, res, next) => {
@@ -138,6 +139,53 @@ export const UpdateCustomer = async (req, res, next) => {
     }
 };
 //---------------------------------------------------------------
+export const SuperAdminList = async (req, res, next) => {
+    try {
+        let userList = [];
+        const { mobileNo } = req.body;
+        const existingCustomer = await Customer.find({ mobileNumber: mobileNo });
+        if (existingCustomer.length === 0) {
+            return res.status(400).json({ message: "Incorrect mobile number.", status: false });
+        }
+        const roles = await Role.find({ roleName: "SuperAdmin" });
+        for (let customer of existingCustomer) {
+            for (let role of roles) {
+                try {
+                    const user = await User.findOne({ rolename: role._id, database: customer.database });
+                    if (user) {
+                        userList.push(user);
+                    }
+                } catch (error) {
+                    console.error(`Error finding user for customer ${customer._id} and role ${role._id}: ${error}`);
+                }
+            }
+        }
+        return res.status(200).json({ SuperAdmin: userList, status: true });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Internal Server Error", status: false });
+    }
+};
+
+
+
+
+export const SignInWithMobile = async (req, res, next) => {
+    try {
+        const { mobileNo } = req.body;
+        let existingAccount = await Customer.findOne({ mobileNumber:mobileNo }).populate({ path: "rolename", model: "role", });
+        if (!existingAccount) {
+            return res.status(400).json({ message: "Incorrect mobile No.", status: false });
+        }
+        const token = Jwt.sign({ subject: existingAccount.email }, process.env.TOKEN_SECRET_KEY, { expiresIn: '1d' });
+        // await Customer.updateOne({ email }, { $set: { latitude, longitude, currentAddress } });
+        return res.json({ message: "Login successful", user: { ...existingAccount.toObject(), password: undefined, token }, status: true, });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Internal Server Error", status: false });
+    }
+};
+
 export const SignIn = async (req, res, next) => {
     try {
         const { email, userName, password, latitude, longitude, currentAddress } = req.body;
