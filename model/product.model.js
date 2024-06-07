@@ -98,6 +98,6 @@ const ProductSchema = new mongoose.Schema({
     },
     landedCost:{
         type:Number
-    },
+    }
 }, { timestamps: true })
 export const Product = mongoose.model('product', ProductSchema);
