@@ -207,12 +207,12 @@ export const ProductWisePurchaseReport = async (req, res, next) => {
 
 export const deletePurchaseOrder = async (req, res, next) => {
     try {
-        const order = await PurchaseOrder.findById({ _id: req.params.id })
+        const order = await PurchaseOrder.findById(req.params.id)
         if (!order) {
-            return res.status(404).json({ error: "Not Found", status: false });
+            return res.status(404).json({ message: "Not Found", status: false });
         }
         if(order.status ==="completed"){
-            return res.status(400).json({ error: "this order not deleted", status: false });
+            return res.status(400).json({ message: "this order not deleted", status: false });
         }
         order.status = "Deactive";
         await order.save();
