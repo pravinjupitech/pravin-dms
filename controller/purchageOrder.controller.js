@@ -20,19 +20,21 @@ export const purchaseOrder = async (req, res, next) => {
             const billAmount = orderItems.reduce((total, orderItem) => {
                 return total + (orderItem.price * orderItem.qty);
             }, 0);
-            // for (const orderItem of orderItems) {
-            //     const product = await Product.findOne({ _id: orderItem.productId });
-            //     if (product) {
-            //         product.purchaseDate = new Date()
-            //         product.partyId = req.body.partyId;
-            //         product.purchaseStatus = true
-            //         await product.save();
-            //         const warehouse = { productId: orderItem.productId, unitType: orderItem.unitType, currentStock: orderItem.qty, transferQty: orderItem.qty, price: orderItem.price, totalPrice: orderItem.totalPrice, Size: orderItem.Size }
-            //         await addProductInWarehouse(warehouse, product.warehouse)
-            //     } else {
-            //         return res.status(404).json(`Product with ID ${orderItem.productId} not found`);
-            //     }
-            // }
+            for (const orderItem of orderItems) {
+                const product = await Product.findOne({ _id: orderItem.productId });
+                if (product) {
+                    // product.purchaseDate = new Date()
+                    // product.partyId = req.body.partyId;
+                    // product.purchaseStatus = true
+                    product.landedCost = orderItem.landedCost;
+                    product.basicPrice = orderItem.basicPrice;
+                    await product.save();
+                    // const warehouse = { productId: orderItem.productId, unitType: orderItem.unitType, currentStock: orderItem.qty, transferQty: orderItem.qty, price: orderItem.price, totalPrice: orderItem.totalPrice, Size: orderItem.Size }
+                    // await addProductInWarehouse(warehouse, product.warehouse)
+                } else {
+                    return res.status(404).json(`Product with ID ${orderItem.productId} not found`);
+                }
+            }
             req.body.userId = user._id;
             req.body.database = user.database;
             req.body.invoiceId = result
