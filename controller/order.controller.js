@@ -352,6 +352,24 @@ export const createOrderHistoryById = async (req, res, next) => {
     }
 };
 
+export const deleteSalesOrder = async (req, res, next) => {
+    try {
+        const order = await CreateOrder.findById(req.params.id)
+        if (!order) {
+            return res.status(404).json({ error: "Not Found", status: false });
+        }
+        if(order.status ==="completed"){
+            return res.status(400).json({ error: "this order not deleted", status: false });
+        }
+        order.status = "Deactive";
+        await order.save();
+        return res.status(200).json({ message: "delete successfull!", status: true })
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ error: "Internal Server Error", status: false });
+    }
+}
+
 // export const createOrderHistoryByPartyId = async (req, res, next) => {
 //     try {
 //         const orders = await CreateOrder.findById(req.params.id).populate({
