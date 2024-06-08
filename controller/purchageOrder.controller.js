@@ -145,11 +145,12 @@ export const updatePurchaseOrder = async (req, res, next) => {
         const oldOrderItems = order.orderItems || [];
         const newOrderItems = updatedFields.orderItems || [];
         for (const newOrderItem of newOrderItems) {
-            const oldOrderItem = oldOrderItems.find(item => item.productId.toString() === newOrderItem.productId.toString());
-            if (oldOrderItem) {
-                const quantityChange = newOrderItem.qty - oldOrderItem.qty;
+            // const oldOrderItem = oldOrderItems.find(item => item.productId.toString() === newOrderItem.productId.toString());
+            // if (oldOrderItem) {
+                // const quantityChange = newOrderItem.qty - oldOrderItem.qty;
                 if (quantityChange !== 0) {
                     const product = await Product.findById({ _id: newOrderItem.productId });
+                    console.log(product)
                     if (product) {
                         //     product.Size -= quantityChange;
                         console.log(newOrderItem.landedCost)
@@ -161,7 +162,7 @@ export const updatePurchaseOrder = async (req, res, next) => {
                         console.error(`Product with ID ${newOrderItem.productId} not found`);
                     }
                 }
-            }
+            // }
         }
         Object.assign(order, updatedFields);
         const updatedOrder = await order.save();
