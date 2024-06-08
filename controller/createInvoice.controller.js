@@ -157,7 +157,8 @@ export const SavePurchaseInvoice = async (req, res, next) => {
                 product.purchaseDate = current
                 product.partyId = req.body.partyId;
                 product.purchaseStatus = true
-                const warehouse = { productId: orderItem.productId, currentStock: (orderItem.qty), transferQty: (orderItem.qty), price: orderItem.price, totalPrice: orderItem.totalPrice, gstPercentage: orderItem.gstPercentage, igstTaxType: orderItem.igstTaxType,primaryUnit:orderItem.primaryUnit,secondaryUnit:orderItem.secondaryUnit,secondarySize:orderItem.secondarySize }
+                product.landedCost = orderItem.landedCost;
+                const warehouse = { productId: orderItem.productId, currentStock: (orderItem.qty), transferQty: (orderItem.qty), price: orderItem.price, totalPrice: orderItem.totalPrice, gstPercentage: orderItem.gstPercentage, igstTaxType: orderItem.igstTaxType,primaryUnit:orderItem.primaryUnit,secondaryUnit:orderItem.secondaryUnit,secondarySize:orderItem.secondarySize,landedCost:orderItem.landedCost }
                 await product.save();
                 await addProductInWarehouse(warehouse, product.warehouse)
                 await ClosingPurchase(orderItem, product.warehouse)
