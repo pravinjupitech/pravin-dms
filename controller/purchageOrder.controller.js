@@ -26,14 +26,9 @@ export const purchaseOrder = async (req, res, next) => {
                     // product.purchaseDate = new Date()
                     // product.partyId = req.body.partyId;
                     // product.purchaseStatus = true
-                    console.log("landedCost "+orderItem.landedCost);
-                    
-                    product.basicPrice = await orderItem.basicPrice;
-                    product.landedCost = await orderItem.landedCost;
-                    console.log(product.landedCost)
-                    
-                    const pro = await product.save();
-                    console.log(pro)
+                    // product.basicPrice = await orderItem.basicPrice;
+                    // product.landedCost = await orderItem.landedCost;
+                    // await product.save();
                     // console.log(await product.save())
                     // const warehouse = { productId: orderItem.productId, unitType: orderItem.unitType, currentStock: orderItem.qty, transferQty: orderItem.qty, price: orderItem.price, totalPrice: orderItem.totalPrice, Size: orderItem.Size }
                     // await addProductInWarehouse(warehouse, product.warehouse)
@@ -155,12 +150,14 @@ export const updatePurchaseOrder = async (req, res, next) => {
                 const quantityChange = newOrderItem.qty - oldOrderItem.qty;
                 if (quantityChange !== 0) {
                     const product = await Product.findById({ _id: newOrderItem.productId });
-                    // if (product) {
-                    //     product.Size -= quantityChange;
-                    //     await product.save();
-                    // } else {
-                    //     console.error(`Product with ID ${newOrderItem.productId} not found`);
-                    // }
+                    if (product) {
+                        //     product.Size -= quantityChange;
+                        product.basicPrice = await newOrderItem.basicPrice;
+                        product.landedCost = await newOrderItem.landedCost;
+                        await product.save();
+                    } else {
+                        console.error(`Product with ID ${newOrderItem.productId} not found`);
+                    }
                 }
             }
         }
@@ -219,7 +216,7 @@ export const deletePurchaseOrder = async (req, res, next) => {
         if (!order) {
             return res.status(404).json({ message: "Not Found", status: false });
         }
-        if(order.status ==="completed"){
+        if (order.status === "completed") {
             return res.status(400).json({ message: "this order not deleted", status: false });
         }
         order.status = "Deactive";
