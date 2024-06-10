@@ -240,7 +240,45 @@ const CreateInvoiceSchema = new mongoose.Schema({
     },
     invoiceStatus: {
         type: Boolean
-    }
+    },
+    overAllDiscountPer: {
+        type: Number
+    },
+    overAllCharges: {
+        type: Number
+    },
+    discountDetails: [
+        {
+            discountedAmount: {
+                type: Number
+            },
+            percentage: {
+                type: Number
+            },
+            title: {
+                type: String
+            },
+            disType: {
+                type: String
+            }
+        }
+    ],
+    chargesDetails: [
+        {
+            chargedAmount: {
+                type: Number
+            },
+            percentage: {
+                type: Number
+            },
+            title: {
+                type: String
+            },
+            chargedType: {
+                type: String
+            }
+        }
+    ],
 }, { timestamps: true });
 
 export const InvoiceList = mongoose.model("invoiceList", CreateInvoiceSchema);
