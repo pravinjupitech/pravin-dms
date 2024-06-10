@@ -76,6 +76,10 @@ export const SaveInvoiceList = async (req, res, next) => {
         createOrder.transporter = req.body.transporter
         createOrder.vehicleNo = req.body.vehicleNo
         createOrder.invoiceStatus = true
+        createOrder.overAllDiscountPer = req.body.overAllDiscountPer
+        createOrder.overAllCharges = req.body.overAllCharges
+        createOrder.discountDetails = req.body.discountDetails
+        createOrder.chargesDetails = req.body.chargesDetails
         await createOrder.save()
         if (invoiceList) {
             // await ledgerSalesForDebit(req.body, particular)
@@ -157,7 +161,7 @@ export const SavePurchaseInvoice = async (req, res, next) => {
                 product.purchaseDate = current
                 product.partyId = req.body.partyId;
                 product.purchaseStatus = true
-                product.landedCost = orderItem.landedCost;
+                // product.landedCost = orderItem.landedCost;
                 const warehouse = { productId: orderItem.productId, currentStock: (orderItem.qty), transferQty: (orderItem.qty), price: orderItem.price, totalPrice: orderItem.totalPrice, gstPercentage: orderItem.gstPercentage, igstTaxType: orderItem.igstTaxType,primaryUnit:orderItem.primaryUnit,secondaryUnit:orderItem.secondaryUnit,secondarySize:orderItem.secondarySize,landedCost:orderItem.landedCost }
                 await product.save();
                 await addProductInWarehouse(warehouse, product.warehouse)
