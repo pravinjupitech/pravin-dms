@@ -230,19 +230,57 @@ const createOrderSchema = new mongoose.Schema({
     otherCharges: {
         type: Number
     },
-    caseDiscount:{
-        type:Number
+    caseDiscount: {
+        type: Number
     },
-    targetDiscount:{
-        type:Number
+    targetDiscount: {
+        type: Number
     },
-    turnOverDiscount:{
-        type:Number
+    turnOverDiscount: {
+        type: Number
     },
     gstOtherCharges: [],
     ARN: {
         type: String
     },
+    overAllDiscountPer: {
+        type: Number
+    },
+    overAllCharges: {
+        type: Number
+    },
+    discountDetails: [
+        {
+            discountedAmount: {
+                type: Number
+            },
+            percentage: {
+                type: Number
+            },
+            title: {
+                type: String
+            },
+            disType: {
+                type: String
+            }
+        }
+    ],
+    chargesDetails: [
+        {
+            chargedAmount: {
+                type: Number
+            },
+            percentage: {
+                type: Number
+            },
+            title: {
+                type: String
+            },
+            chargedType: {
+                type: String
+            }
+        }
+    ],
     ARNStatus: {
         type: Boolean,
         default: false
