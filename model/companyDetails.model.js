@@ -89,7 +89,8 @@ const CompanySchema = new mongoose.Schema({
     BillNumber: {
         type: String
     },
-    termsAndCondition: {
+    termsAndCondition:
+    {
         type: String
     }
 }, { timestamps: true })
