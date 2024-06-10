@@ -76,6 +76,10 @@ export const SaveInvoiceList = async (req, res, next) => {
         createOrder.transporter = req.body.transporter
         createOrder.vehicleNo = req.body.vehicleNo
         createOrder.invoiceStatus = true
+        createOrder.overAllDiscountPer = req.body.overAllDiscountPer
+        createOrder.overAllCharges = req.body.overAllCharges
+        createOrder.discountDetails = req.body.discountDetails
+        createOrder.chargesDetails = req.body.chargesDetails
         await createOrder.save()
         if (invoiceList) {
             // await ledgerSalesForDebit(req.body, particular)
