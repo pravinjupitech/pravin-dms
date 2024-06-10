@@ -150,14 +150,11 @@ export const updatePurchaseOrder = async (req, res, next) => {
                 // const quantityChange = newOrderItem.qty - oldOrderItem.qty;
                 // if (quantityChange !== 0) {
                     const product = await Product.findById({ _id: newOrderItem.productId });
-                    console.log(product)
                     if (product) {
                         //     product.Size -= quantityChange;
-                        console.log(newOrderItem.landedCost)
                         product.basicPrice = await newOrderItem.basicPrice;
                         product.landedCost = await newOrderItem.landedCost;
-                        const pro = await product.save();
-                        console.log(pro)
+                        await product.save();
                     } else {
                         console.error(`Product with ID ${newOrderItem.productId} not found`);
                     }
