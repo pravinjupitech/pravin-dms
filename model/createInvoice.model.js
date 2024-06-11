@@ -252,6 +252,9 @@ const CreateInvoiceSchema = new mongoose.Schema({
             discountedAmount: {
                 type: Number
             },
+            discountedValue: {
+                type: Number
+            },
             percentage: {
                 type: Number
             },
@@ -278,7 +281,7 @@ const CreateInvoiceSchema = new mongoose.Schema({
                 type: String
             }
         }
-    ],
+    ]
 }, { timestamps: true });
 
 export const InvoiceList = mongoose.model("invoiceList", CreateInvoiceSchema);
