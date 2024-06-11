@@ -278,7 +278,7 @@ const CreateInvoiceSchema = new mongoose.Schema({
                 type: String
             }
         }
-    ],
+    ]
 }, { timestamps: true });
 
 export const InvoiceList = mongoose.model("invoiceList", CreateInvoiceSchema);
