@@ -270,6 +270,9 @@ const GoodDispatchSchema = new mongoose.Schema({
             discountedAmount: {
                 type: Number
             },
+            discountedValue: {
+                type: Number
+            },
             percentage: {
                 type: Number
             },

@@ -252,6 +252,9 @@ const CreateInvoiceSchema = new mongoose.Schema({
             discountedAmount: {
                 type: Number
             },
+            discountedValue: {
+                type: Number
+            },
             percentage: {
                 type: Number
             },
