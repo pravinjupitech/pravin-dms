@@ -29,19 +29,19 @@ export const SaveInvoiceList = async (req, res, next) => {
             const currentDate = new Date();
             const timeDifference = currentDate - lastOrderDate;
             const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
-            if (days >= party.lockInTime && due.remainingAmount > 0) {
-                party.autoBillingStatus = "locked";
-                due.dueStatus = "overDue"
-                await due.save()
-                await party.save()
-                return res.status(400).json({ message: "First, you need to pay the previous payment", status: false });
-            } else if (due?.remainingAmount > 0 && due?.lockingAmount <= due?.remainingAmount) {
-                party.autoBillingStatus = "locked";
-                due.dueStatus = "overDue";
-                await due.save()
-                await party.save()
-                return res.status(400).json({ message: "First, you need to pay the previous payment", status: false });
-            }
+            // if (days >= party.lockInTime && due.remainingAmount > 0) {
+            //     party.autoBillingStatus = "locked";
+            //     due.dueStatus = "overDue"
+            //     await due.save()
+            //     await party.save()
+            //     return res.status(400).json({ message: "First, you need to pay the previous payment", status: false });
+            // } else if (due?.remainingAmount > 0 && due?.lockingAmount <= due?.remainingAmount) {
+            //     party.autoBillingStatus = "locked";
+            //     due.dueStatus = "overDue";
+            //     await due.save()
+            //     await party.save()
+            //     return res.status(400).json({ message: "First, you need to pay the previous payment", status: false });
+            // }
         }
         const existingInvoice = await InvoiceList.findOne({ orderId });
         if (existingInvoice) {
