@@ -251,7 +251,11 @@ const createOrderSchema = new mongoose.Schema({
     },
     discountDetails: [
         {
+
             discountedAmount: {
+                type: Number
+            },
+            discountedValue: {
                 type: Number
             },
             percentage: {
