@@ -78,3 +78,21 @@ export const allSalesPerson = async (req, res, next) => {
         return res.status(500).json({ error: "Internal Server Error", status: false })
     }
 }
+export const updateSuperAdminRole = async (req, res, next) => {
+    try {
+        const user = await User.findById(req.params.id)
+        if (!user) {
+            return res.status(404).json({ message: "user not found", status: false })
+        }
+        if (!req.body.rolename) {
+            return res.status(400).json({ message: "rolename required", status: false })
+        }
+        user.rolename = req.body.rolename
+        await user.save()
+        return res.status(200).json({ message: "updated successfull!", status: true })
+    }
+    catch (err) {
+        console.log(err)
+        return res.status(500).json({ error: "Internal Server Error", status: false })
+    }
+}
