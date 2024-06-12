@@ -69,16 +69,18 @@ export const updatedRole = async (req, res, next) => {
 
 export const saveRole = async (req, res, next) => {
     try {
+        let createdRoles = [];
         for (let roleData of req.body.Roles) {
             const existingRole = await Role.findOne({ roleName: roleData.role.roleName, database: roleData.role.database });
             if (existingRole) {
                 // console.log(`Role with name ${roleData.role.roleName} already exists.`);
             } else {
                 const newRole = await Role.create(roleData.role);
+                createdRoles.push(newRole);
                 // console.log(`Role ${newRole.roleName} created successfully.`);
             }
         }
-        return res.status(200).json({ message: "role assign successfull!", status: true });
+        return res.status(200).json({createdRoles, message: "role assign successfull!", status: true });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ error: "Internal Server Error", status: false });
