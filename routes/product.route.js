@@ -1,5 +1,5 @@
 import express from "express";
-import { DeleteProduct, HSNWisePurchaseReport, HSNWiseSalesReport, ProductXml, SaveProduct, StockAlert, UpdateProduct, ViewProduct, ViewProductById, ViewProductForPurchase, saveItemWithExcel, viewCurrentStock } from "../controller/product.controller.js";
+import { DeleteProduct, HSNWisePurchaseReport, HSNWiseSalesReport, ProductXml, SaveProduct, StockAlert, UpdateProduct, ViewProduct, ViewProductById, ViewProductForPurchase, saveItemWithExcel, updateItemWithExcel, viewCurrentStock } from "../controller/product.controller.js";
 import multer from "multer";
 
 const router = express.Router();
@@ -8,6 +8,7 @@ const uploads = multer({ dest: "public/ExcelFile/" })
 
 router.get("/get-xml", ProductXml);
 router.post("/import-item-data", uploads.single('file'), saveItemWithExcel)
+router.post("/update-import-product", uploads.single('file'), updateItemWithExcel)
 
 router.post("/save-product", upload.array("files"), SaveProduct)
 router.get("/view-product/:id/:database", ViewProduct)

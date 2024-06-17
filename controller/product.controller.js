@@ -25,13 +25,13 @@ export const SaveProduct = async (req, res) => {
     if (req.files) {
       let images = [];
       req.files.map((file) => {
-           images.push(file.filename);
+        images.push(file.filename);
       });
       // req.body.thumbnail = thumb;
       req.body.Product_image = images;
     }
     const product = await Product.create(req.body);
-    await addProductInWarehouse1(req.body, product.warehouse,product)
+    await addProductInWarehouse1(req.body, product.warehouse, product)
     return product ? res.status(200).json({ message: "product save successfully", status: true }) : res.status(400).json({ message: "something went wrong", status: false });
   } catch (error) {
     console.error(error);
@@ -219,7 +219,7 @@ export const saveItemWithExcel = async (req, res) => {
       }
       if (document.HSN_Code) {
         const insertedDocument = await Product.create(document);
-        await addProductInWarehouse1(document, insertedDocument.warehouse,insertedDocument)
+        await addProductInWarehouse1(document, insertedDocument.warehouse, insertedDocument)
         insertedDocuments.push(insertedDocument);
       } else {
         existingParts.push(document.Product_Title)
@@ -235,8 +235,50 @@ export const saveItemWithExcel = async (req, res) => {
     return res.status(500).json({ error: 'Internal Server Error', status: false });
   }
 }
+export const updateItemWithExcel = async (req, res) => {
+  try {
+    const filePath = await req.file.path;
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(filePath);
+    const worksheet = workbook.getWorksheet(1);
+    const headerRow = worksheet.getRow(1);
+    const headings = [];
+    headerRow.eachCell((cell) => {
+      headings.push(cell.value);
+    });
+    const insertedDocuments = [];
+    const existingParts = [];
+    for (let rowIndex = 2; rowIndex <= worksheet.actualRowCount; rowIndex++) {
+      const dataRow = worksheet.getRow(rowIndex);
+      const document = {};
+      for (let columnIndex = 1; columnIndex <= headings.length; columnIndex++) {
+        const heading = headings[columnIndex - 1];
+        const cellValue = dataRow.getCell(columnIndex).value;
+        document[heading] = cellValue;
+      }
+      if (document.HSN_Code) {
+        const filter = { Product_Title: document.Product_Title }; // Ensure the filter is correctly formed
+        const options = { new: true, upsert: true }; // Consider using upsert if you want to create the document if it doesn't exist
+        const insertedDocument = await Product.findOneAndUpdate(filter, document, options);
 
-export const addProductInWarehouse1 = async (warehouse, warehouseId,id) => {
+        // await addProductInWarehouse1(document, insertedDocument.warehouse,insertedDocument)
+        insertedDocuments.push(insertedDocument);
+      } else {
+        existingParts.push(document.Product_Title)
+      }
+    }
+    let message = 'Updated Successfull !';
+    if (existingParts.length > 0) {
+      message = `Some product not exist hsn code: ${existingParts.join(', ')}`;
+    }
+    return res.status(200).json({ message, status: true });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: 'Internal Server Error', status: false });
+  }
+}
+
+export const addProductInWarehouse1 = async (warehouse, warehouseId, id) => {
   try {
     const user = await Warehouse.findById({ _id: warehouseId })
     if (!user) {
