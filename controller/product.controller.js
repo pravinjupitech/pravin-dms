@@ -256,16 +256,16 @@ export const updateItemWithExcel = async (req, res) => {
         const cellValue = dataRow.getCell(columnIndex).value;
         document[heading] = cellValue;
       }
-      if (document.HSN_Code) {
+      // if (document.HSN_Code) {
         const filter = { Product_Title: document.Product_Title,database:req.params.database }; // Ensure the filter is correctly formed
         const options = { new: true, upsert: true }; // Consider using upsert if you want to create the document if it doesn't exist
         const insertedDocument = await Product.findOneAndUpdate(filter, document, options);
 
         // await addProductInWarehouse1(document, insertedDocument.warehouse,insertedDocument)
         insertedDocuments.push(insertedDocument);
-      } else {
-        existingParts.push(document.Product_Title)
-      }
+      // } else {
+      //   existingParts.push(document.Product_Title)
+      // }
     }
     let message = 'Updated Successfull !';
     if (existingParts.length > 0) {

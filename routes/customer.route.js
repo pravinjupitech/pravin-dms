@@ -1,5 +1,5 @@
 import express from "express";
-import { DeleteCustomer, SaveCustomer, SignIn, SignInWithMobile, SuperAdminList, UpdateCustomer, ViewCustomer, ViewCustomerById, dueParty, forgetPassword, lockParty, otpVerify, overDueReport, paymentDueReport, saveExcelFile, updatePassword } from "../controller/customer.controller.js";
+import { DeleteCustomer, SaveCustomer, SignIn, SignInWithMobile, SuperAdminList, UpdateCustomer, ViewCustomer, ViewCustomerById, dueParty, forgetPassword, lockParty, otpVerify, overDueReport, paymentDueReport, saveExcelFile, updateExcelFile, updatePassword } from "../controller/customer.controller.js";
 import multer from "multer";
 
 const router = express.Router();
@@ -7,6 +7,7 @@ const upload = multer({ dest: "public/Images/" })
 const uploads = multer({ dest: "public/ExcelFile/" })
 
 router.post("/party-data", uploads.single('file'), saveExcelFile)
+router.post("/update-customer/:database", uploads.single('file'), updateExcelFile)
 
 router.post("/save-customer", upload.any("files"), SaveCustomer);
 router.get("/view-customer/:id/:database", ViewCustomer);
