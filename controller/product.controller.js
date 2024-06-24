@@ -257,12 +257,12 @@ export const updateItemWithExcel = async (req, res) => {
         document[heading] = cellValue;
       }
       // if (document.HSN_Code) {
-        const filter = { Product_Title: document.Product_Title,database:req.params.database }; // Ensure the filter is correctly formed
-        const options = { new: true, upsert: true }; // Consider using upsert if you want to create the document if it doesn't exist
-        const insertedDocument = await Product.findOneAndUpdate(filter, document, options);
+      const filter = { Product_Title: document.Product_Title, database: req.params.database }; // Ensure the filter is correctly formed
+      const options = { new: true, upsert: true }; // Consider using upsert if you want to create the document if it doesn't exist
+      const insertedDocument = await Product.findOneAndUpdate(filter, document, options);
 
-        // await addProductInWarehouse1(document, insertedDocument.warehouse,insertedDocument)
-        insertedDocuments.push(insertedDocument);
+      // await addProductInWarehouse1(document, insertedDocument.warehouse,insertedDocument)
+      insertedDocuments.push(insertedDocument);
       // } else {
       //   existingParts.push(document.Product_Title)
       // }
@@ -326,6 +326,7 @@ export const addProductInWarehouse = async (warehouse, warehouseId) => {
     }
     const sourceProductItem = user.productItems.find(
       (pItem) => pItem.productId === warehouse.productId);
+    console.log(sourceProductItem)
     if (sourceProductItem) {
       // sourceProductItem.Size += warehouse.Size;
       sourceProductItem.currentStock += warehouse.transferQty
