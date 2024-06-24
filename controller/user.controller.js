@@ -421,8 +421,8 @@ export const updateUserWithExcel = async (req, res) => {
         }
         // document[heading] = cellValue;
       }
-      const filter = { id: document.id, database: req.params.database }; // Ensure the filter is correctly formed
-      const options = { new: true, upsert: true }; // Consider using upsert if you want to create the document if it doesn't exist
+      const filter = { id: document.id, database: req.params.database };
+      const options = { new: true, upsert: true };
       const insertedDocument = await User.findOneAndUpdate(filter, document, options);
       insertedDocuments.push(insertedDocument);
     }
